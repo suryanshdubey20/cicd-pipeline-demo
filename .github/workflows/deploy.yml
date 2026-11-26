@@ -1,0 +1,17 @@
+name: CI-CD Pipeline
+on:
+  push:
+    branches: [ main ]
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Docker Image Banana
+        run: docker build -t cicd-demo .
+      - name: Website Test Karna
+        run: |
+          docker run -d -p 8080:80 --name test-site cicd-demo
+          sleep 5
+          curl -f localhost:8080
+          docker stop test-site
